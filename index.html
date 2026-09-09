@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="DailyTalk 英语口语练习工作台：外教虚拟互动、日常生活场景对练、口语评分与纠错。">
+<title>DailyTalk · 英语口语练习工作台</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ 顶部栏 ============ -->
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-logo" aria-hidden="true">🗣️</span>
+    <div class="brand-text">
+      <h1>DailyTalk</h1>
+      <p>英语口语练习工作台</p>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="pill-chip" id="chipDate" title="今天日期">📅 --</div>
+    <div class="pill-chip" id="chipGoal" title="今日练习目标">🎯 --</div>
+    <div class="pill-chip" id="chipMic" title="浏览器语音识别状态"><span class="dot dot-idle" id="dotMic"></span><span id="chipMicText">麦克风未连接</span></div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- ============ 侧边导航 ============ -->
+  <nav class="sidebar" aria-label="主导航">
+    <button class="nav-item active" data-view="dashboard"><span class="nav-ico">🏠</span>工作台</button>
+    <button class="nav-item" data-view="tutor"><span class="nav-ico">👩‍🏫</span>外教互动</button>
+    <button class="nav-item" data-view="scenarios"><span class="nav-ico">🛠️</span>场景练习</button>
+    <button class="nav-item" data-view="report"><span class="nav-ico">📊</span>学习报告</button>
+    <div class="sidebar-spacer"></div>
+    <button class="nav-item" id="btnQuickChat" title="一键开始与 Emma 外教自由对话"><span class="nav-ico">⚡</span>快速开练</button>
+  </nav>
+
+  <!-- ============ 主内容区 ============ -->
+  <main class="main">
+
+    <!-- ===== 工作台 Dashboard ===== -->
+    <section class="view active" id="view-dashboard">
+      <div class="welcome">
+        <div>
+          <h2 id="dashGreet">你好 👋</h2>
+          <p id="dashSub">今天也要开口说英语哦！选择下面的方式开始练习。</p>
+        </div>
+        <button class="btn btn-primary btn-lg" id="btnQuickStart">▶ 立即开始外教对话</button>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-ico">⏱️</div><div><p class="stat-num" id="statToday">0<span class="stat-unit"> 分钟</span></p><p class="stat-label">今日练习</p></div></div>
+        <div class="stat-card"><div class="stat-ico">🔥</div><div><p class="stat-num" id="statStreak">0<span class="stat-unit"> 天</span></p><p class="stat-label">连续打卡</p></div></div>
+        <div class="stat-card"><div class="stat-ico">💬</div><div><p class="stat-num" id="statSessions">0<span class="stat-unit"> 次</span></p><p class="stat-label">累计对练</p></div></div>
+        <div class="stat-card"><div class="stat-ico">⭐</div><div><p class="stat-num" id="statAvg">--</p><p class="stat-label">平均评分</p></div></div>
+      </div>
+
+      <div class="dash-grid2">
+        <div class="card">
+          <div class="card-head"><h3>📚 推荐场景</h3><button class="link-btn" data-goto="scenarios">查看全部 →</button></div>
+          <div class="scenario-grid" id="dashScenarios"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>🎯 今日目标</h3><button class="link-btn" id="btnSetGoal">调整</button></div>
+          <div class="goal-box">
+            <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+              <circle class="ring-fg" id="goalRing" cx="60" cy="60" r="52"></circle>
+            </svg>
+            <div class="ring-center"><b id="goalPct">0%</b><span id="goalText">0 / 15 分钟</span></div>
+          </div>
+          <ul class="goal-tips">
+            <li>💡 每天 15 分钟，开口比背单词更有效</li>
+            <li>🎙️ 尽量用「语音输入」作答，才能得到发音评分</li>
+            <li>📝 说错了没关系，系统会帮你纠错并讲解</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>🕑 最近练习记录</h3></div>
+        <div class="history-list" id="dashHistory">
+          <p class="empty-hint">还没有练习记录，去和外教聊两句吧！</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 外教互动 Tutor ===== -->
+    <section class="view" id="view-tutor">
+      <div class="tutor-config card">
+        <div class="cfg-row">
+          <label for="cfgScenario">场景
+            <select id="cfgScenario"></select>
+          </label>
+          <label for="cfgLevel">难度
+            <select id="cfgLevel">
+              <option value="beginner">入门 · 语速慢</option>
+              <option value="intermediate" selected>进阶 · 正常语速</option>
+              <option value="advanced">高手 · 少提示</option>
+            </select>
+          </label>
+          <label class="switch-label"><input type="checkbox" id="optSpeak" checked><span>外教朗读</span></label>
+          <label class="switch-label"><input type="checkbox" id="optHint" checked><span>中文提示</span></label>
+          <label for="cfgRate">语速
+            <select id="cfgRate">
+              <option value="0.75">慢</option>
+              <option value="0.9" selected>正常</option>
+              <option value="1.05">快</option>
+            </select>
+          </label>
+        </div>
+        <div class="cfg-actions">
+          <button class="btn btn-ghost" id="btnNewChat">↺ 新开对话</button>
+          <button class="btn btn-primary" id="btnFinish">结束并评分</button>
+        </div>
+      </div>
+
+      <div class="tutor-layout">
+        <!-- 外教信息栏 -->
+        <aside class="tutor-side card" id="tutorInfo">
+          <div class="tutor-avatar" id="tutorAvatar">E</div>
+          <h3>外教 Emma</h3>
+          <p class="tutor-meta">美国 · 英语母语 · 温和耐心</p>
+          <div class="tutor-status" id="tutorStatus"><span class="dot dot-idle"></span><span id="tutorStatusText">等待开始</span></div>
+          <hr class="soft-hr">
+          <h4 id="curScenarioTitle">自由对话</h4>
+          <p class="desc" id="curScenarioDesc">与外教随意聊天，话题包括天气、爱好、美食、工作学习等。</p>
+          <div class="vocab-wrap" id="vocabChips"></div>
+          <hr class="soft-hr">
+          <h4>跟读金句 🔊</h4>
+          <ul class="bank-list" id="phraseBank"></ul>
+        </aside>
+
+        <!-- 对话区 -->
+        <div class="chat-column">
+          <div class="chat-thread card" id="chatThread" aria-live="polite"></div>
+          <div class="sugg-bar" id="suggBar" hidden>
+            <span class="sugg-label">💡 不知道怎么说？点一下示范：</span>
+            <div class="chip-row" id="suggChips"></div>
+          </div>
+          <div class="input-bar card">
+            <div class="live-speech" id="liveSpeech" hidden></div>
+            <div class="input-row">
+              <button class="mic-btn" id="btnMic" title="按住说话 / 点击开始录音" aria-label="语音输入">🎤</button>
+              <input type="text" id="msgInput" placeholder="输入英文，或点 🎤 用语音说…" autocomplete="off">
+              <button class="btn btn-primary" id="btnSend">发送</button>
+            </div>
+            <p class="input-hint" id="micHint">点击 🎤 开始语音 → 说完自动识别发送（推荐 Chrome/Edge）。也可直接打字练习。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 场景练习 ===== -->
+    <section class="view" id="view-scenarios">
+      <div class="page-head">
+        <div>
+          <h2>🛠️ 场景练习</h2>
+          <p>选择贴近生活的对话场景，跟着外教 Emma 一步步开口。</p>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="tag tag-on" data-lvl="0">全部</span>
+        <span class="tag" data-lvl="1">入门</span>
+        <span class="tag" data-lvl="2">进阶</span>
+        <span class="tag" data-lvl="3">挑战</span>
+      </div>
+      <div class="scenario-grid wide" id="scenarioGrid"></div>
+    </section>
+
+    <!-- ===== 学习报告 ===== -->
+    <section class="view" id="view-report">
+      <div class="page-head">
+        <div>
+          <h2>📊 学习报告</h2>
+          <p>你的口语进步轨迹与常犯错误都在这里。</p>
+        </div>
+        <button class="btn btn-ghost" id="btnClearData">清除本地数据</button>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-ico">⭐</div><div><p class="stat-num" id="rAvg">--</p><p class="stat-label">平均评分</p></div></div>
+        <div class="stat-card"><div class="stat-ico">💬</div><div><p class="stat-num" id="rSessions">0</p><p class="stat-label">练习次数</p></div></div>
+        <div class="stat-card"><div class="stat-ico">🧩</div><div><p class="stat-num" id="rErrors">0</p><p class="stat-label">累计纠正</p></div></div>
+        <div class="stat-card"><div class="stat-ico">🔥</div><div><p class="stat-num" id="rStreak">0<span class="stat-unit"> 天</span></p><p class="stat-label">连续打卡</p></div></div>
+      </div>
+
+      <div class="report-grid">
+        <div class="card">
+          <div class="card-head"><h3>📈 评分趋势</h3></div>
+          <div id="trendChart" class="trend-box"><p class="empty-hint">完成几次练习后，这里会出现你的评分曲线。</p></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>🧭 能力雷达（最近一次）</h3></div>
+          <div class="radar-box"><canvas id="radar" width="300" height="300"></canvas></div>
+          <p class="radar-note" id="radarNote"></p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>🗂️ 常见错误排行</h3></div>
+        <div id="errBars"><p class="empty-hint">暂无数据。练习中系统会自动记录你的错误类型。</p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>📒 我的错误本（温故知新）</h3></div>
+        <div id="reportErrors"><p class="empty-hint">暂无数据。</p></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ 评分结果弹窗 ============ -->
+<div class="modal-mask" id="scoreModal" hidden>
+  <div class="modal">
+    <div class="modal-head"><h3>🎉 本次练习评分</h3><button class="modal-x" id="btnCloseScore">✕</button></div>
+    <div class="score-hero">
+      <div class="score-circle" id="scoreCircle"><b id="scoreVal">--</b><span>综合分</span></div>
+      <div class="dims-wrap" id="dimsBars"></div>
+    </div>
+    <h4>🔍 本课纠错</h4>
+    <div class="modal-errors" id="modalErrors"><p class="empty-hint">太棒了，没有发现明显语法错误！</p></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="btnAgain">↺ 再练一次</button>
+      <button class="btn btn-primary" id="btnViewReport">查看学习报告</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 首次使用引导 ============ -->
+<div class="modal-mask" id="firstRun" hidden>
+  <div class="modal intro-modal">
+    <div class="intro-logo">🗣️</div>
+    <h3>欢迎来到 DailyTalk！</h3>
+    <p>这里有一位耐心的美国外教 <b>Emma</b>，和你进行日常生活英语对话，并在你说完后：</p>
+    <ul class="intro-list">
+      <li>🎤 <b>语音识别</b>：推荐使用 <b>Chrome 或 Edge</b> 浏览器，并允许麦克风权限；</li>
+      <li>⭐ <b>口语评分</b>：从 语法 / 词汇 / 流利度 / 发音 四维评分；</li>
+      <li>✏️ <b>逐句纠错</b>：说错的地方马上指出并给出正确说法和中文讲解；</li>
+      <li>📈 <b>学习报告</b>：记录你的进步曲线与高频错误本。</li>
+    </ul>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="btnGuide">查看使用说明</button>
+      <button class="btn btn-primary" id="btnStartUse">开始练习 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 使用说明弹窗 ============ -->
+<div class="modal-mask" id="guideModal" hidden>
+  <div class="modal intro-modal">
+    <div class="intro-logo">ℹ️</div>
+    <h3>使用说明</h3>
+    <ul class="intro-list left">
+      <li><b>外教互动</b>：选择场景后进入对话；Emma 会说话，轮到你时点 🎤 说英文，或打字发送。</li>
+      <li><b>说错了？</b>：你的每条消息下会即时显示纠错卡片（原句 → 改法 → 中文讲解）。</li>
+      <li><b>卡住了？</b>：输入框上方会出现「示范回答」，点一下可参考，再开口模仿。</li>
+      <li><b>场景练习</b>：左侧「跟读金句」可逐句跟读；评分基于识别置信度，仅供参考。</li>
+      <li><b>结束与评分</b>：点击「结束并评分」查看四维雷达图与完整纠错清单。</li>
+      <li><b>隐私</b>：全部数据仅保存在你本机的浏览器中，不会上传。</li>
+      <li><b>语音要求</b>：语音识别需要网络环境（Chrome/Edge）；若无法使用语音，打字同样可以获得语法/词汇评分。</li>
+    </ul>
+    <div class="modal-actions"><button class="btn btn-primary" id="btnGuideClose">知道了</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<!-- ============ 每日目标设置弹窗 ============ -->
+<div class="modal-mask" id="goalModal" hidden>
+  <div class="modal goal-modal">
+    <div class="modal-head"><h3>🎯 设置每日练习目标</h3><button class="modal-x" id="btnGoalClose" aria-label="关闭">✕</button></div>
+    <p class="goal-modal-tip">建议每天 15–30 分钟，坚持比时长更重要。</p>
+    <div class="goal-presets" id="goalPresets">
+      <button type="button" class="goal-opt" data-min="10">10 分钟</button>
+      <button type="button" class="goal-opt" data-min="15">15 分钟</button>
+      <button type="button" class="goal-opt" data-min="20">20 分钟</button>
+      <button type="button" class="goal-opt" data-min="30">30 分钟</button>
+      <button type="button" class="goal-opt" data-min="45">45 分钟</button>
+    </div>
+    <div class="goal-custom">
+      <label for="goalInput">或自定义（1–480 分钟）</label>
+      <div class="goal-input-row">
+        <input type="number" id="goalInput" min="1" max="480" value="15" inputmode="numeric">
+        <button type="button" class="btn btn-primary" id="btnGoalSave">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/correct.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
