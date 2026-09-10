@@ -81,6 +81,7 @@
     if (name === "scenarios") renderScenarioGrid();
     if (name === "report") renderReport();
     if (name === "tutor") renderTutorSide();
+    if (name === "interview" && window.DailyTalkInterview) window.DailyTalkInterview.onShow();
     window.scrollTo(0, 0);
   }
 
@@ -1381,10 +1382,10 @@
       var d = $("#chipDate");
       if (d) d.textContent = "📅 " + (new Date().getMonth() + 1) + "月" + new Date().getDate() + "日";
     }, 30000);
-    /* 支持 #tutor / #scenarios / #report 直达 */
+    /* 支持 #tutor / #scenarios / #report / #interview 直达 */
     var hash = (location.hash || "").replace("#", "");
     if (hash === "tutor") { startFromScenario("free"); }
-    else if (hash === "scenarios" || hash === "report") { switchView(hash); }
+    else if (hash === "scenarios" || hash === "report" || hash === "interview") { switchView(hash); }
   }
 
   document.addEventListener("DOMContentLoaded", init);
