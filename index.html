@@ -32,6 +32,7 @@
     <button class="nav-item" data-view="tutor" data-page-node-id="ZghFx7Oj7gvNZGMZAqMSey"><span class="nav-ico" data-page-node-id="94e8jy2fhOZCzPw0vENMnx">👩‍🏫</span>外教互动</button>
     <button class="nav-item" data-view="scenarios" data-page-node-id="eIouFbR6yFoheZZtxG29Nt"><span class="nav-ico" data-page-node-id="bQOcUheDrK0BfV6BeeQ5XZ">🛠️</span>场景练习</button>
     <button class="nav-item" data-view="interview" id="navInterview"><span class="nav-ico">🎓</span>面试特训<span class="nav-new">NEW</span></button>
+    <button class="nav-item" data-view="words" id="navWords"><span class="nav-ico">🎮</span>单词大炮<span class="nav-new">GAME</span></button>
     <button class="nav-item" data-view="report" data-page-node-id="C7qzrPu2nBsuTYHVluXwZr"><span class="nav-ico" data-page-node-id="jJyVVeA7VsRszFdZsuD3Vw">📊</span>学习报告</button>
     <div class="sidebar-spacer" data-page-node-id="D40hhpOnFJeGoOt5dvRqPU"></div>
     <button class="nav-item" id="btnQuickChat" title="一键开始与 Emma 外教自由对话" data-page-node-id="FKD32AI9GaNSU4mlhEr97D"><span class="nav-ico" data-page-node-id="ckTEaPGNpZSjRUErFbB5ox">⚡</span>快速开练</button>
@@ -245,6 +246,80 @@
 
       <div id="ivBody"></div>
     </section>
+
+    <!-- ============ 单词大炮 ============ -->
+    <section class="view" id="view-words">
+      <div class="page-head">
+        <div>
+          <h2>🎮 单词大炮 · 记单词</h2>
+          <p>单词从天而降，直接敲键盘补全缺失的字母把它击落——在紧张刺激的游戏里记住拼写。</p>
+        </div>
+        <div class="iv-head-note">键盘直接输入 · 连击加分 · 错词自动收录</div>
+      </div>
+
+      <!-- 设置页 -->
+      <div class="card w-setup" id="wSetup">
+        <h3 class="w-step">1️⃣ 选择词书</h3>
+        <div class="w-books" id="wBooks"></div>
+        <h3 class="w-step">2️⃣ 难度与节奏</h3>
+        <div class="w-opts-row"><span class="w-opts-label">缺失字母</span><div class="w-opts" id="wDiff"></div></div>
+        <div class="w-opts-row"><span class="w-opts-label">下落速度</span><div class="w-opts" id="wSpeed"></div></div>
+        <h3 class="w-step">3️⃣ 辅助功能</h3>
+        <div class="w-opts" id="wToggles"></div>
+        <div class="w-setup-actions">
+          <button type="button" class="btn btn-primary w-start" id="btnWStart">🚀 开始游戏</button>
+          <span class="w-start-tip">点击后直接敲键盘即可，无需点击输入框</span>
+        </div>
+        <div class="w-wrong-entry" id="wWrongEntry"></div>
+        <div class="w-how">
+          <b>🎯 玩法</b>：单词从上方下落，字母有缺失（如 <code>a_p_e</code>）→ 敲键盘依次补全（a→p→e）将其击落得分 → 连击越高单字得分越高 → 未击落的单词会落到下面堆积，<b>堆满 5 个游戏结束</b>；全清词书即通关！
+        </div>
+      </div>
+
+      <!-- 游戏页 -->
+      <div id="wGame" hidden>
+        <div class="card w-hud">
+          <div class="w-hud-row">
+            <div class="w-stat"><span>分数</span><b id="wScore">0</b></div>
+            <div class="w-stat"><span>等级</span><b id="wLevel">Lv.1</b></div>
+            <div class="w-stat"><span>已击落</span><b id="wKills">0</b></div>
+            <div class="w-stat"><span>词书总数</span><b id="wTotal">0</b></div>
+            <div class="w-stat"><span>时间</span><b id="wTime">00:00</b></div>
+            <div class="w-stat"><span>连击</span><b id="wCombo">0</b></div>
+          </div>
+          <div class="w-hud-sub">
+            <span>剩余待测 <b id="wLeft">0</b></span>
+            <span>输入正确率 <b id="wAcc">--</b></span>
+            <span>覆盖率 <b id="wCov2">0%</b></span>
+          </div>
+        </div>
+
+        <div class="w-layout">
+          <aside class="card w-side">
+            <div class="w-side-block"><b>🈶 中文提示</b><div class="w-hint" id="wHint">&nbsp;</div></div>
+            <div class="w-side-block"><b>🎯 目标</b><div class="w-target" id="wTargetInfo">&nbsp;</div></div>
+            <div class="w-side-block w-controls">
+              <button type="button" class="btn btn-ghost btn-sm" id="btnWPause">⏸ 暂停</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnWKb">⌨️ 键盘</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnWSound">🔊 发音开</button>
+              <button type="button" class="btn btn-ghost btn-sm w-end" id="btnWEnd">✖ 结束本局</button>
+            </div>
+          </aside>
+
+          <div class="w-field-wrap">
+            <div class="w-field" id="wField"></div>
+            <div class="w-overlay" id="wOverlay" hidden></div>
+          </div>
+
+          <aside class="card w-side">
+            <div class="w-side-block"><b>📤 即将出场</b><div id="wNext" class="w-next"></div></div>
+            <div class="w-side-block w-cov" id="wCov"></div>
+          </aside>
+        </div>
+
+        <div class="w-kb" id="wKb" hidden></div>
+      </div>
+    </section>
   </main>
 </div>
 
@@ -330,6 +405,8 @@
 <script src="data.js"></script>
 <script src="interview-data.js"></script>
 <script src="interview.js"></script>
+<script src="words-data.js"></script>
+<script src="words.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
