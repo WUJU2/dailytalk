@@ -57,7 +57,7 @@
     id: "career",
     name: "职场面试",
     icon: "💼",
-    desc: "面试、行政、招生录取高频词——配合面试特训模块一起练效果最佳",
+    desc: "面试、行政、招生录取高频词——求职季冲刺必备",
     words: [
       { w: "interview", zh: "面试" }, { w: "resume", zh: "简历" }, { w: "candidate", zh: "候选人" },
       { w: "position", zh: "职位" }, { w: "salary", zh: "薪资" }, { w: "benefit", zh: "福利" },
