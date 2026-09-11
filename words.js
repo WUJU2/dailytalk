@@ -213,6 +213,17 @@
     toggleKb();
     updateHud(); renderNext(); renderStack();
     toastMsg("🎯 开火！直接敲键盘补全单词的缺失字母");
+    /* 移动端：开局后把场地滚到顶栏下方，让下落区与虚拟键盘同屏 */
+    if (("ontouchstart" in window) || (window.matchMedia && window.matchMedia("(pointer: coarse)").matches)) {
+      setTimeout(function () {
+        try {
+          var top = el.field.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0);
+          var bar = document.querySelector(".topbar");
+          var offset = (bar ? bar.getBoundingClientRect().height : 56) + 10;
+          window.scrollTo({ top: Math.max(0, top - offset), behavior: "smooth" });
+        } catch (e) { try { el.field.scrollIntoView(); } catch (e2) { } }
+      }, 120);
+    }
     requestAnimationFrame(loop);
   }
 
@@ -564,6 +575,14 @@
     loadStore();
     renderSetup();
     toggleKb();
+    /* 移动端：提示改为虚拟键盘玩法 */
+    var tip = $("#wStartTip");
+    if (tip) {
+      var isTouch = ("ontouchstart" in window) || (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+      tip.textContent = isTouch
+        ? "点击后立即开始，用下方虚拟键盘补全字母"
+        : "点击后直接敲键盘即可，无需点击输入框";
+    }
     if (el.start) el.start.addEventListener("click", startGame);
     if (el.btnPause) el.btnPause.addEventListener("click", function () { togglePause(); });
     if (el.btnEnd) el.btnEnd.addEventListener("click", function () { if (G.running) endGame(false, true); else backToSetup(); });

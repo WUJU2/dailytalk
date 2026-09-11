@@ -86,6 +86,14 @@
     if (state._lastView === "words" && name !== "words" && window.DailyTalkWordsGame) window.DailyTalkWordsGame.onHide();
     state._lastView = name;
     window.scrollTo(0, 0);
+    /* 移动端：让当前导航标签自动滚入可视区 */
+    var activeNav = $(".nav-item[data-view='" + name + "'].active");
+    if (activeNav && activeNav.scrollIntoView) {
+      var bar = $(".sidebar");
+      if (bar && bar.scrollWidth > bar.clientWidth + 4) {
+        try { activeNav.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); } catch (e) {}
+      }
+    }
   }
 
   /* ---------------- 语音合成 TTS ---------------- */
@@ -1358,10 +1366,52 @@
   }
 
   var started = false;
+  /* ---------------- 移动端适配（iOS / Android） ---------------- */
+  function isTouchDevice() {
+    return ("ontouchstart" in window) ||
+      (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+  }
+  function bindMobileUX() {
+    var touch = isTouchDevice();
+    /* 1) 视口高度变量：iOS 键盘弹出时 100dvh 会失真，用 visualViewport 实时校准 */
+    var vv = window.visualViewport;
+    function syncH() {
+      var h = vv ? vv.height : window.innerHeight;
+      if (h && h > 120) document.documentElement.style.setProperty("--apph", Math.round(h) + "px");
+    }
+    if (vv) {
+      vv.addEventListener("resize", syncH);
+      vv.addEventListener("scroll", syncH);
+    }
+    window.addEventListener("resize", syncH);
+    window.addEventListener("orientationchange", function () { setTimeout(syncH, 280); });
+    syncH();
+
+    /* 2) 输入框聚焦时滚到可视区中央，避免被软键盘遮住 */
+    document.addEventListener("focusin", function (e) {
+      var t = e.target;
+      if (!t || !t.tagName) return;
+      var tag = t.tagName;
+      if (tag !== "INPUT" && tag !== "TEXTAREA") return;
+      setTimeout(function () {
+        try { t.scrollIntoView({ block: "center", behavior: "smooth" }); }
+        catch (err) { try { t.scrollIntoView(); } catch (e2) {} }
+      }, touch ? 320 : 0);
+    }, true);
+
+    /* 3) 切到后台/锁屏时释放语音，避免回到前台后 TTS 卡住 */
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) return;
+      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+      if (state.listening) { try { stopMic(); } catch (e) {} }
+    });
+  }
+
   function init() {
     if (started) return;
     started = true;
     bindEvents();
+    bindMobileUX();
     switchView("dashboard");
     renderTutorSide();
     if (!micSupported()) {

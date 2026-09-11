@@ -723,3 +723,276 @@ h1,h2,h3,h4{line-height:1.3}
   .w-field{height:480px}
   .w-books{grid-template-columns:1fr}
 }
+
+/* =========================================================
+ * 移动端适配（iOS / Android）
+ * 说明：本段位于文件末尾，用于覆盖前面的桌面端规则
+ * ========================================================= */
+
+/* ---------- 1. 基础：安全区、点击反馈、视口高度 ---------- */
+:root{
+  --sat:env(safe-area-inset-top,0px);   /* 刘海/状态栏 */
+  --sab:env(safe-area-inset-bottom,0px);/* 底部指示条 */
+  --sal:env(safe-area-inset-left,0px);
+  --sar:env(safe-area-inset-right,0px);
+  --apph:100vh;                          /* 兜底 */
+}
+@supports (height:100dvh){ :root{ --apph:100dvh } }
+
+html{
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;             /* 禁止双击缩放，保留滚动与双指缩放 */
+}
+body{
+  min-height:var(--apph);
+  overscroll-behavior-y:none;            /* 抑制下拉刷新/橡皮筋 */
+}
+/* 触屏设备：去掉粘滞 hover，改用按压缩放反馈 */
+@media (hover:none){
+  .nav-item:hover{background:none;color:var(--sub)}
+  .nav-item.active:hover{background:linear-gradient(135deg,var(--brand),#6a86f7);color:#fff}
+  .btn-primary:hover{filter:none}
+  .btn-ghost:hover{border-color:var(--line);color:var(--sub)}
+  .btn-danger:hover{background:#fff;color:#dc2626}
+  .sugg-chip:hover{border-color:#dfe4f2;background:#fff}
+  .tag:hover{border-color:var(--line);color:var(--sub)}
+  .link-btn:hover{text-decoration:none}
+  .modal-x:hover{background:none;color:var(--sub)}
+}
+/* 触控目标：按钮/可点元素 ≥ 44px（iOS 人机指南 / Android 48dp） */
+@media (pointer:coarse){
+  button,.btn,.nav-item,.tag,.sugg-chip,.iv-tab,.w-chip,.w-book,.iv-q-item,.iv-sc-card,.sc-card,
+  .link-btn,.iv-lang-btn,.mini,.w-mini,.w-key,.w-stack-chip,.iv-mini-say{
+    touch-action:manipulation;           /* 消除 300ms 点击延迟与双击缩放 */
+  }
+  .btn{min-height:44px}
+  .btn-sm{min-height:36px}
+  .modal-x{width:44px;height:44px;font-size:19px}
+  .nav-item{min-height:44px}
+  .iv-tab,.tag,.w-chip{min-height:40px}
+  .link-btn,.iv-mini-say{padding:8px 4px}
+  .msg .replay-btn{min-height:34px}
+  /* 防止 iOS 聚焦自动放大：输入类控件字号 ≥16px（需用 ID/类提升优先级） */
+  input,textarea,select,
+  #msgInput,.goal-input-row input,#ivText,
+  .iv-input-row textarea,.w-kb input{font-size:16px}
+}
+
+/* ---------- 2. 顶栏：刘海安全区 + 精简单行 ---------- */
+@media (max-width:820px){
+  .topbar{
+    height:calc(56px + var(--sat));
+    padding:var(--sat) 14px 0 calc(14px + var(--sal));
+    padding-right:calc(14px + var(--sar));
+    flex-wrap:nowrap;gap:10px;
+  }
+  .brand{gap:9px;min-width:0}
+  .brand-logo{width:34px;height:34px;border-radius:10px;font-size:18px}
+  .brand-text h1{font-size:16.5px}
+  .brand-text p{display:none}
+  .topbar-right{gap:6px;flex-wrap:nowrap;overflow:hidden}
+  .topbar-right .pill-chip{display:none}
+  .topbar-right #chipMic{display:inline-flex;padding:5px 10px;font-size:11.5px}
+  .topbar-right #chipGoal{display:inline-flex;padding:5px 10px;font-size:11.5px}
+}
+
+/* ---------- 3. 导航：手机端改为底部标签栏（iOS / Android 原生手感） ---------- */
+@media (max-width:820px){
+  .layout{
+    grid-template-columns:1fr;gap:14px;
+    padding:10px 12px calc(86px + var(--sab));
+    padding-left:calc(12px + var(--sal));
+    padding-right:calc(12px + var(--sar));
+    min-height:auto;
+  }
+  .sidebar{
+    position:fixed;left:0;right:0;bottom:0;top:auto;z-index:40;
+    flex-direction:row;flex-wrap:nowrap;align-items:stretch;gap:0;
+    height:auto;margin:0;padding:6px 4px calc(7px + var(--sab));
+    overflow:visible;
+    background:rgba(255,255,255,.96);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);border-bottom:none;
+    box-shadow:0 -6px 22px rgba(30,42,90,.09);
+  }
+  .sidebar::-webkit-scrollbar{display:none}
+  .nav-item{
+    flex:1 1 0;min-width:0;width:auto;
+    flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    padding:5px 2px;border-radius:11px;border:none;background:none;
+    font-size:10.5px;font-weight:600;line-height:1.2;letter-spacing:0;
+    color:var(--sub);white-space:nowrap;overflow:hidden;
+    transition:color .15s;
+  }
+  .nav-item.active{
+    background:none;color:var(--brand);box-shadow:none;font-weight:700;
+  }
+  .nav-item.active .nav-ico{transform:translateY(-1px);filter:drop-shadow(0 2px 4px rgba(79,109,245,.35))}
+  .nav-ico{font-size:19px;line-height:1;transition:transform .15s}
+  .nav-new{display:none}                 /* 小屏省空间：隐藏 NEW/GAME 徽标 */
+  .sidebar-spacer{display:none}
+  #btnQuickChat{border:none;color:#4356c9;font-weight:700}
+  #btnQuickChat .nav-ico{font-size:19px}
+  .nav-item:active{background:rgba(79,109,245,.07)}
+}
+
+/* ---------- 4. 卡片与网格：手机单列化 ---------- */
+@media (max-width:820px){
+  .card{padding:14px;border-radius:14px}
+  .card-head{margin-bottom:11px}
+  .welcome{gap:10px;margin-bottom:14px}
+  .welcome h2{font-size:20px}
+  .page-head{gap:10px;margin-bottom:13px}
+  .page-head h2{font-size:19px}
+  .page-head p{font-size:13px}
+  .iv-head-note{font-size:11.5px;padding:6px 11px}
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+  .stat-card{padding:12px 13px;gap:11px}
+  .dash-grid2,.report-grid,.tutor-layout,.w-layout,
+  .iv-cat-grid,.iv-sc-grid,.iv-vocab-grid,.iv-phrase-grid,.scenario-grid,.scenario-grid.wide{
+    grid-template-columns:1fr !important;gap:12px;
+  }
+  .tutor-side{position:static;text-align:left}
+  .tutor-side .tutor-ava{margin:0 auto}
+  .filter-row{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+  .filter-row::-webkit-scrollbar{display:none}
+  .tag{flex:0 0 auto}
+  .iv-tabs{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+  .iv-tabs::-webkit-scrollbar{display:none}
+  .iv-tab{flex:0 0 auto}
+  #radar,.radar-box canvas{width:min(300px,100%) !important;height:auto !important}
+  .trend-box{height:auto;min-height:190px}
+  .trend-box svg{max-width:100%;height:auto}
+  .eb-label{width:74px;font-size:11.5px}
+  .msg{max-width:94%}
+}
+
+/* ---------- 5. 聊天：更高的对话区、更好按的麦克风 ---------- */
+@media (max-width:820px){
+  .tutor-layout{gap:12px}
+  .chat-column{gap:9px}
+  .chat-thread{
+    height:min(54dvh,460px);min-height:300px;padding:13px;gap:11px;border-radius:14px;
+    overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  }
+  .msg-ava{width:32px;height:32px;font-size:15px}
+  .bubble{font-size:14px}
+  .bubble-hint{font-size:12px}
+  .input-row{gap:8px}
+  #msgInput{padding:12px 13px;border-radius:12px}
+  .mic-btn{width:52px;height:52px;font-size:22px}
+  .sugg-bar{border-radius:11px;padding:8px 10px}
+  .sugg-chip{padding:8px 12px;font-size:12.5px}
+  .live-speech{font-size:13.5px}
+  .input-hint{font-size:11px}
+}
+
+/* ---------- 6. 单词大炮：场地高度随屏幕、虚拟键盘自适应 ---------- */
+@media (max-width:820px){
+  .w-hud{padding:11px 12px;margin-bottom:12px}
+  .w-stat b{font-size:17px}
+  .w-stat span{font-size:10.5px}
+  .w-hud-sub{gap:8px;font-size:11.5px;flex-wrap:wrap}
+  .w-layout{gap:12px}
+  .w-field-wrap{min-height:auto}
+  .w-field{height:min(42dvh,340px);border-width:2px;border-radius:14px}
+  .w-field-top{font-size:11px;padding:6px 0}
+  .w-word{font-size:17px;padding:6px 10px;border-radius:9px;gap:1px}
+  .w-blank{min-width:19px;height:24px;font-size:16px}
+  .w-stack{left:6px;right:6px;bottom:6px;padding:7px 6px;min-height:48px;gap:5px}
+  .w-stack-slot{width:46px;height:26px}
+  .w-stack-chip{max-width:104px;font-size:13px;padding:4px 8px}
+  .w-books{gap:9px}
+  .w-book{padding:11px 12px}
+  .w-book-ico{font-size:22px}
+  .w-setup-actions{flex-direction:column;align-items:stretch;gap:9px;margin-top:16px}
+  .w-start{width:100%;padding:14px 20px}
+  .w-start-tip{text-align:center}
+  .w-controls{grid-template-columns:1fr 1fr;gap:8px;margin-top:0}
+  .w-side{padding:12px}
+  .w-over{padding:18px}
+  .w-over h3{font-size:19px}
+  .w-over-ico{font-size:40px}
+  .w-over-stats b{font-size:18px}
+  .w-over-actions{flex-direction:column-reverse}
+  .w-over-actions .btn{width:100%}
+  .w-wrong-list{max-height:96px}
+  /* 虚拟键盘：吸附在底部标签栏之上，游戏中始终可敲 */
+  .w-kb{
+    position:sticky;bottom:calc(84px + var(--sab));z-index:20;
+    margin:12px 0 4px;gap:6px;width:100%;
+    padding:8px 7px;border-radius:14px;
+    background:rgba(255,255,255,.96);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    box-shadow:0 -2px 16px rgba(30,42,90,.10),0 6px 18px rgba(30,42,90,.08);
+  }
+  .w-kb-row{width:100%;gap:5px}
+  .w-key{flex:1 1 0;min-width:0;height:44px;font-size:15px;padding:0}
+  .w-key.wide{flex:2 1 0;font-size:12px;min-width:0}
+}
+
+/* ---------- 7. 弹窗：手机端贴底弹出（原生手感） ---------- */
+@media (max-width:820px){
+  .modal-mask{align-items:flex-end;padding:0;padding-bottom:0}
+  .modal{
+    width:100%;max-width:100%;max-height:calc(var(--apph) - 56px);
+    border-radius:20px 20px 0 0;padding:18px;
+    padding-bottom:calc(18px + var(--sab));
+    animation:sheetUp .28s cubic-bezier(.22,.8,.3,1);
+  }
+  @keyframes sheetUp{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+  .modal-actions{flex-direction:column-reverse;gap:9px}
+  .modal-actions .btn{width:100%}
+  .score-hero{gap:14px;padding:14px}
+  .score-circle{width:112px;height:112px}
+  .score-circle > div{width:88px;height:88px}
+  .score-circle b{font-size:29px}
+  .dims-wrap{min-width:0;width:100%}
+  .goal-input-row{flex-wrap:wrap}
+  .intro-logo{font-size:40px}
+}
+
+/* ---------- 8. 浮层与提示：避开底部指示条 ---------- */
+.toast{
+  bottom:calc(24px + var(--sab));
+  max-width:calc(100vw - 32px);
+}
+@media (max-width:820px){
+  .toast{
+    left:16px;right:16px;transform:none;
+    bottom:calc(92px + var(--sab));   /* 抬到固定底栏之上 */
+    width:auto;text-align:center;border-radius:14px;font-size:13px;
+  }
+}
+
+/* ---------- 9. 小屏手机（≤380px）与横屏兜底 ---------- */
+@media (max-width:380px){
+  .brand-text h1{font-size:15.5px}
+  .topbar-right #chipGoal{display:none}
+  .w-word{font-size:15.5px;padding:5px 8px}
+  .w-blank{min-width:17px;height:22px;font-size:15px}
+  .w-key{height:40px;font-size:14px}
+  .stat-card{padding:10px 11px}
+  .stat-card b{font-size:18px}
+}
+@media (max-height:480px) and (orientation:landscape){
+  .w-field{height:min(62dvh,300px)}
+  .chat-thread{height:min(66dvh,300px);min-height:220px}
+  /* 横屏矮屏：底栏改为普通横向标签条，避免占用高度 */
+  .sidebar{
+    position:static;padding:9px 12px;border-top:none;border-bottom:1px solid var(--line);
+    box-shadow:none;overflow-x:auto;overflow-y:hidden;gap:8px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .nav-item{
+    flex:0 0 auto;flex-direction:row;gap:8px;padding:8px 14px;
+    font-size:13px;border-radius:999px;background:var(--card);border:1px solid var(--line);
+  }
+  .nav-item.active{background:linear-gradient(135deg,var(--brand),#6a86f7);color:#fff;border-color:transparent}
+  .nav-ico{font-size:15px}
+  .nav-new{display:inline-block;margin-left:6px;font-size:9px}
+  .layout{padding-bottom:calc(24px + var(--sab))}
+  .toast{bottom:calc(20px + var(--sab))}
+}
