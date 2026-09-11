@@ -84,6 +84,8 @@
     if (name === "tutor") renderTutorSide();
     if (name === "words" && window.DailyTalkWordsGame) window.DailyTalkWordsGame.onShow();
     if (state._lastView === "words" && name !== "words" && window.DailyTalkWordsGame) window.DailyTalkWordsGame.onHide();
+    if (name === "picture" && window.DailyTalkPictureApp) window.DailyTalkPictureApp.onShow();
+    if (state._lastView === "picture" && name !== "picture" && window.DailyTalkPictureApp) window.DailyTalkPictureApp.onHide();
     state._lastView = name;
     window.scrollTo(0, 0);
     /* 移动端：让当前导航标签自动滚入可视区 */
@@ -1435,10 +1437,10 @@
       var d = $("#chipDate");
       if (d) d.textContent = "📅 " + (new Date().getMonth() + 1) + "月" + new Date().getDate() + "日";
     }, 30000);
-    /* 支持 #tutor / #scenarios / #report / #words 直达 */
+    /* 支持 #tutor / #scenarios / #report / #words / #picture 直达 */
     var hash = (location.hash || "").replace("#", "");
     if (hash === "tutor") { startFromScenario("free"); }
-    else if (hash === "scenarios" || hash === "report" || hash === "words") { switchView(hash); }
+    else if (hash === "scenarios" || hash === "report" || hash === "words" || hash === "picture") { switchView(hash); }
   }
 
   document.addEventListener("DOMContentLoaded", init);

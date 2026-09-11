@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="DailyTalk">
 <meta name="description" content="DailyTalk 英语口语练习工作台：外教虚拟互动、日常生活场景对练、口语评分与纠错。" data-page-node-id="je0llKcQQAvUu6wdrEP63H">
 <title>DailyTalk · 英语口语练习工作台</title>
-<link rel="stylesheet" href="style.css" data-page-node-id="kTqdQLtLnstdOJkY7WplEM">
+<link rel="stylesheet" href="css/style.css" data-page-node-id="kTqdQLtLnstdOJkY7WplEM">
 </head>
 <body data-page-node-id="vpfxh40RJQlrcfRqblcGU6">
 
@@ -39,6 +39,7 @@
     <button class="nav-item" data-view="tutor" data-page-node-id="ZghFx7Oj7gvNZGMZAqMSey"><span class="nav-ico" data-page-node-id="94e8jy2fhOZCzPw0vENMnx">👩‍🏫</span>外教互动</button>
     <button class="nav-item" data-view="scenarios" data-page-node-id="eIouFbR6yFoheZZtxG29Nt"><span class="nav-ico" data-page-node-id="bQOcUheDrK0BfV6BeeQ5XZ">🛠️</span>场景练习</button>
     <button class="nav-item" data-view="words" id="navWords"><span class="nav-ico">🎮</span>单词大炮<span class="nav-new">GAME</span></button>
+    <button class="nav-item" data-view="picture" id="navPicture"><span class="nav-ico">📖</span>绘本启蒙<span class="nav-new">NEW</span></button>
     <button class="nav-item" data-view="report" data-page-node-id="C7qzrPu2nBsuTYHVluXwZr"><span class="nav-ico" data-page-node-id="jJyVVeA7VsRszFdZsuD3Vw">📊</span>学习报告</button>
     <div class="sidebar-spacer" data-page-node-id="D40hhpOnFJeGoOt5dvRqPU"></div>
     <button class="nav-item" id="btnQuickChat" title="一键开始与 Emma 外教自由对话" data-page-node-id="FKD32AI9GaNSU4mlhEr97D"><span class="nav-ico" data-page-node-id="ckTEaPGNpZSjRUErFbB5ox">⚡</span>快速开练</button>
@@ -290,8 +291,87 @@
         <div class="w-kb" id="wKb" hidden></div>
       </div>
     </section>
+    <!-- ============ 英语绘本启蒙 ============ -->
+    <section class="view" id="view-picture">
+      <div class="page-head">
+        <div>
+          <h2>📖 英语绘本启蒙</h2>
+          <p>给 4–5 岁零基础小朋友的英文绘本：每页只有一句话，中英对照、逐词高亮，点一下就能听。固定的小主人公陪着读，听多了自然会开口。</p>
+        </div>
+        <div class="iv-head-note">中英对照 · 逐词高亮 · 连续磨耳朵</div>
+      </div>
+
+      <!-- 书架 -->
+      <div id="pbShelf">
+        <div class="card pb-shelf-top">
+          <div class="pb-shelf-left">
+            <b>🎧 磨耳朵</b>
+            <p>按顺序把 8 本绘本自动读完：<em>慢速英文 → 常速英文 → 中文解释</em>，家长可以先去忙别的，让小朋友自己听。建议每天 10–15 分钟。</p>
+          </div>
+          <button type="button" class="btn btn-primary btn-lg" id="pbEarAll">▶ 一键磨耳朵（全书连播）</button>
+        </div>
+        <div class="pb-shelf-stat" id="pbShelfStat"></div>
+        <div class="pb-books" id="pbBooks"></div>
+
+        <div class="card pb-chars-card">
+          <div class="card-head"><h3>👨‍👩‍👧‍👦 认识故事里的小伙伴</h3><span class="pb-hint">点一下，听听他们怎么介绍自己</span></div>
+          <div class="pb-chars" id="pbChars"></div>
+        </div>
+      </div>
+
+      <!-- 阅读器 -->
+      <div class="pb-reader" id="pbReader" hidden>
+        <div class="card pb-bar">
+          <button type="button" class="btn btn-ghost btn-sm" id="pbBack">← 书架</button>
+          <div class="pb-head"><b id="pbTitle">—</b><span id="pbTitleZh">—</span></div>
+          <div class="pb-bar-right">
+            <span class="pb-pageno" id="pbPageNo">1 / 8</span>
+            <button type="button" class="btn btn-ghost btn-sm" id="pbSound">🔊 声音开</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="pbZhToggle">🈶 中文开</button>
+          </div>
+        </div>
+
+        <div class="pb-modes" id="pbModes">
+          <button type="button" class="pb-mode on" data-mode="read">📖 逐页读</button>
+          <button type="button" class="pb-mode" data-mode="ear">🎧 磨耳朵</button>
+          <button type="button" class="pb-mode" data-mode="speak">🎤 跟读</button>
+          <button type="button" class="pb-mode" data-mode="quiz">📝 小问答</button>
+        </div>
+
+        <div class="pb-stage" id="pbStage"></div>
+
+        <div class="pb-caption">
+          <p class="pb-en" id="pbEn"></p>
+          <p class="pb-zh" id="pbZh"></p>
+        </div>
+
+        <div class="pb-words" id="pbWords"></div>
+        <div class="pb-panel" id="pbPanel"></div>
+
+        <div class="pb-ear" id="pbEarBar" hidden>
+          <span id="pbEarText"></span>
+          <button type="button" class="btn btn-ghost btn-sm" id="pbEarStop">⏹ 停止</button>
+        </div>
+
+        <div class="pb-controls" id="pbControls">
+          <button type="button" class="btn btn-ghost" id="pbPrev">← 上一页</button>
+          <button type="button" class="btn btn-primary" id="pbPlay">🔊 读一遍</button>
+          <button type="button" class="btn btn-ghost" id="pbSlow">🐢 慢速读</button>
+          <button type="button" class="btn btn-ghost" id="pbNext">下一页 →</button>
+        </div>
+
+        <div class="pb-dots" id="pbDots"></div>
+
+        <details class="pb-tips">
+          <summary>👨‍👩‍👧 家长小贴士（怎么陪读效果最好）</summary>
+          <ul id="pbTipList"></ul>
+        </details>
+      </div>
+    </section>
   </main>
 </div>
+
+
 
 <!-- ============ 评分结果弹窗 ============ -->
 <div class="modal-mask" id="scoreModal" hidden data-page-node-id="AWpaL4nyDs4AKleko3ZHFc">
@@ -371,10 +451,12 @@
   </div>
 </div>
 
-<script src="correct.js"></script>
-<script src="data.js"></script>
-<script src="words-data.js"></script>
-<script src="words.js"></script>
-<script src="app.js"></script>
+<script src="js/correct.js"></script>
+<script src="js/data.js"></script>
+<script src="js/words-data.js"></script>
+<script src="js/words.js"></script>
+<script src="js/picture-data.js"></script>
+<script src="js/picture.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
