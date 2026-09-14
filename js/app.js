@@ -264,6 +264,8 @@
       prompts: 0,
       finished: false,
       userCount: 0,
+      slots: {},        // 场景中已获得的信息（size/temp/togo/pay…）
+      openTopic: null,  // 自由对话：Emma 最近问过的话题，短答也能顺着聊
       dims: { grammar: [], vocab: [], flu: [], pron: [] },
       errPool: []       // [{text,fix,type,note,count}]
     };
@@ -386,12 +388,22 @@
     return true;
   }
 
-  function advanceAndAsk(ackText) {
+  function advanceAndAsk(ackText, ackZh, B) {
     var s = state.session;
+    var steps = s.sc.steps;
     s.stepIdx++;
-    if (ackText) tutorSay(ackText, "", { silent: true });
-    if (s.stepIdx < s.sc.steps.length) {
-      var step = s.sc.steps[s.stepIdx];
+    /* 你已经说过的信息，不再重复问 → 自动跳过对应步骤 */
+    if (B && s.slots) {
+      var guard = 0;
+      while (s.stepIdx < steps.length && guard < steps.length) {
+        var slot = B.stepSlot(steps[s.stepIdx].q);
+        if (slot && s.slots[slot]) { s.stepIdx++; guard++; continue; }
+        break;
+      }
+    }
+    if (ackText) tutorSay(ackText, ackZh || "", { silent: true });
+    if (s.stepIdx < steps.length) {
+      var step = steps[s.stepIdx];
       tutorSay(step.q, step.h || "", { chips: step.chips || [] });
       return false;
     }
@@ -410,46 +422,75 @@
     var hint = $("#micHint"); if (hint) hint.textContent = "场景已完成，点击右上「结束并评分」查看本课成绩～";
   }
 
+  /* 当前步骤对象 */
+  function curStepOf() {
+    var s = state.session;
+    var steps = s.sc ? s.sc.steps : null;
+    if (!steps || !steps.length) return null;
+    return steps[Math.min(Math.max(s.stepIdx, 0), steps.length - 1)];
+  }
+
   function handleScripted(text) {
     var s = state.session;
     var sc = s.sc;
     var steps = sc.steps;
+    var B = window.DailyTalkBrain;
     var inter = isInterjection(text);
 
     if (inter === "again") {
-      var lastStep = steps[Math.min(Math.max(s.stepIdx, 0), steps.length - 1)];
+      var lastStep = curStepOf();
       tutorSay(lastStep.q, (lastStep.h || ""), { chips: lastStep.chips, replay: true });
       return;
     }
     if (inter === "slow") {
-      var st2 = steps[Math.min(Math.max(s.stepIdx, 0), steps.length - 1)];
+      var st2 = curStepOf();
       tutorSay("Of course! I'll say it slowly: " + st2.q, st2.h || "", { chips: st2.chips, slow: true });
       return;
     }
     if (inter === "confuse") {
-      var st3 = steps[Math.min(Math.max(s.stepIdx, 0), steps.length - 1)];
+      var st3 = curStepOf();
       tutorSay("Good question! This means: " + (st3.h || st3.q) + " 😊 Now let's try again — " + st3.q, "", { chips: st3.chips });
       return;
     }
     if (inter === "whoami") {
-      tutorSay("I'm Emma, your friendly American English tutor! I'm here to help you practice daily English. Now back to our conversation — " + steps[Math.min(Math.max(s.stepIdx, 0), steps.length - 1)].q, "");
+      tutorSay("I'm Emma, your friendly American English tutor! I'm here to help you practice daily English. Now back to our conversation — " + curStepOf().q, "");
       return;
     }
     if (inter === "help") {
-      var st4 = steps[Math.min(Math.max(s.stepIdx, 0), steps.length - 1)];
+      var st4 = curStepOf();
       tutorSay("No worries! For this question, you can say something like: " + (st4.chips && st4.chips[0] ? st4.chips[0] : "a short answer in English") + ". Try it — I'm listening! 👂", "");
       return;
     }
 
-    /* 正常作答处理 */
+    /* ① 用户在场景里提问 → 正面回答，再回到当前这句 */
+    var lowTxt = text.toLowerCase();
+    var looksQuestion = /\?\s*$/.test(text) ||
+      /^(what|where|when|who|why|which|how|do|does|did|is|are|can|could|would|will|should|have|has|may)\b/i.test(lowTxt);
+    if (looksQuestion && !B) { /* 无大脑模块时按普通作答处理 */ }
+    if (looksQuestion && B) {
+      var ans = B.scenarioAnswer(text);
+      tutorSay(ans + "Anyway — " + curStepOf().q, curStepOf().h || "", { chips: curStepOf().chips });
+      return;
+    }
+
+    /* ② 解析这句里已经给出的信息（杯子大小/冷热/堂食外带/付款方式…） */
+    var filled = B ? B.extractSlots(text, sc) : {};
     var wc = wordCount(text);
     var item = matchMenu(text);
     var vhit = hasVocab(text);
-    var goodEnough = wc >= 3 || item || vhit;
+    var filledKeys = Object.keys(filled);
+    var goodEnough = wc >= 3 || item || vhit || filledKeys.length > 0;
+
+    /* ③ 答非所问（跟本场景无关的一大段话）→ 温和拉回 */
+    if (B && sc.vocab && sc.vocab.length && wc >= 5 && !item && !vhit && !filledKeys.length) {
+      var steer = B.steerBack(curStepOf().q);
+      tutorSay(steer.en, steer.zh, { chips: curStepOf().chips });
+      return;
+    }
 
     if (!goodEnough && s.prompts < 1 && wc < 2) {
       s.prompts++;
-      var curStep = steps[Math.min(Math.max(s.stepIdx, 0), steps.length - 1)];
+      var curStep = curStepOf();
       tutorSay("Let me help you. You can try saying: " + (curStep.chips && curStep.chips[0] ? curStep.chips[0] : "anything in English!") + " — give it a shot! 😊",
         curStep.h || "", { chips: curStep.chips, slow: true });
       return;
@@ -457,26 +498,29 @@
 
     s.prompts = 0;
     s.answerCount++;
-    var ack;
-    if (item) {
-      ack = pick(ACK_ITEM).replace("{i}", item);
-    } else {
-      ack = pick(GEN_ACKS);
+    /* 记录已获得的槽位 */
+    if (filledKeys.length) {
+      for (var fi = 0; fi < filledKeys.length; fi++) { s.slots[filledKeys[fi]] = filled[filledKeys[fi]]; }
     }
-    advanceAndAsk(ack);
+    var ackObj = B ? B.scenarioAck(text, item, filled) : { en: (item ? pick(ACK_ITEM).replace("{i}", item) : pick(GEN_ACKS)), zh: "" };
+    advanceAndAsk(ackObj.en, ackObj.zh, B);
   }
 
   function handleFree(text) {
     var s = state.session;
-    var res = DATA.chatReply(text, s.answerCount);
+    var B = window.DailyTalkBrain;
+    var res = B
+      ? B.freeReply(text, { openTopic: s.openTopic, turn: s.answerCount })
+      : DATA.chatReply(text, s.answerCount);
     s.answerCount++;
+    if (res.topic) s.openTopic = res.topic;
     if (res.over) {
       s.finished = true;
-      tutorSay(res.say, "", {});
+      tutorSay(res.say, res.zh || "", {});
       setTimeout(function () { finishAndScore(true); }, 1600);
       return;
     }
-    tutorSay(res.say, "", {});
+    tutorSay(res.say, res.zh || "", {});
   }
 
   function tutorTurn(text) {
@@ -977,6 +1021,7 @@
     if (state.session && state.session.userCount > 0 && !state.session.finished) {
       toast("已丢弃上一段未评分对话，开始新练习。");
     }
+    if (window.DailyTalkBrain) window.DailyTalkBrain.resetMemory();
     newSession(id);
     switchView("tutor");
     renderTutorSide();
@@ -993,7 +1038,15 @@
     } else {
       s.stepIdx = 0;
       var opener = pick(DATA.free.openers);
-      tutorSay(opener, "自由话题：想到什么聊什么，放松开口就好 😊", { chips: [] });
+      var B0 = window.DailyTalkBrain;
+      var oq = B0 ? B0.openQuestion() : null;
+      if (oq) {
+        s.openTopic = oq.topic;
+        opener += " " + oq.en;
+      } else {
+        s.openTopic = null;
+      }
+      tutorSay(opener, oq ? oq.zh : "自由话题：想到什么聊什么，放松开口就好 😊", { chips: [] });
     }
   }
 
