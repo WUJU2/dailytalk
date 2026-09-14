@@ -140,6 +140,117 @@
     ]
   });
 
+  /* ---------- 4. 九年级牛津版（译林 9A/9B 课文词汇） ---------- */
+  B.push({
+    id: "oxford9",
+    name: "九年级牛津版",
+    icon: "📚",
+    desc: "牛津译林版 9A/9B 课文核心词：性格、颜色、烦恼、成长、艺术、影视、侦探、机器人……",
+    words: [
+      /* 9A U1 Know yourself 性格与品质 */
+      { w: "personality", zh: "性格；个性" }, { w: "energetic", zh: "精力充沛的" },
+      { w: "creative", zh: "有创造力的" }, { w: "curious", zh: "好奇的" },
+      { w: "modest", zh: "谦虚的" }, { w: "organized", zh: "做事有条理的" },
+      { w: "patient", zh: "有耐心的" }, { w: "generous", zh: "慷慨的" },
+      { w: "practical", zh: "务实的" }, { w: "imagine", zh: "想象" },
+      { w: "praise", zh: "赞扬" }, { w: "sale", zh: "销售" },
+      { w: "accountant", zh: "会计" }, { w: "engineer", zh: "工程师" },
+      { w: "pioneer", zh: "开拓者；先锋" }, { w: "suit", zh: "适合" },
+      /* 9A U2 Colour 颜色与情绪 */
+      { w: "rainbow", zh: "彩虹" }, { w: "indigo", zh: "靛蓝色" },
+      { w: "violet", zh: "紫罗兰色" }, { w: "mood", zh: "心情" },
+      { w: "wisdom", zh: "智慧" }, { w: "jealous", zh: "嫉妒的" },
+      { w: "stressed", zh: "紧张的；有压力的" }, { w: "relaxed", zh: "放松的" },
+      { w: "peace", zh: "平静；安宁" }, { w: "purity", zh: "纯洁" },
+      { w: "joy", zh: "欢乐" }, { w: "cheer", zh: "使振奋" },
+      { w: "remind", zh: "提醒" }, { w: "influence", zh: "影响" },
+      { w: "prefer", zh: "更喜欢" }, { w: "warmth", zh: "温暖" },
+      /* 9A U3 Teenage problems 少年烦恼 */
+      { w: "teenage", zh: "青少年的" }, { w: "exam", zh: "考试" },
+      { w: "noise", zh: "噪音" }, { w: "friendship", zh: "友谊" },
+      { w: "quarrel", zh: "争吵" }, { w: "suggestion", zh: "建议" },
+      { w: "advice", zh: "忠告；建议" }, { w: "solve", zh: "解决" },
+      { w: "doubt", zh: "怀疑" }, { w: "achieve", zh: "达到；实现" },
+      { w: "balance", zh: "平衡" }, { w: "valuable", zh: "宝贵的" },
+      { w: "strict", zh: "严格的" }, { w: "lonely", zh: "孤独的" },
+      /* 9A U4 Growing up 成长 */
+      { w: "courage", zh: "勇气" }, { w: "unusual", zh: "不寻常的" },
+      { w: "research", zh: "研究；调查" }, { w: "university", zh: "大学" },
+      { w: "graduation", zh: "毕业" }, { w: "ceremony", zh: "典礼" },
+      { w: "survive", zh: "幸存；生存" }, { w: "attack", zh: "袭击" },
+      { w: "cancer", zh: "癌症" }, { w: "drawback", zh: "缺点；不利因素" },
+      { w: "disappear", zh: "消失" }, { w: "score", zh: "得分" },
+      { w: "national", zh: "国家的；民族的" }, { w: "succeed", zh: "成功" },
+      /* 9A U5 Art world 艺术世界 */
+      { w: "art", zh: "艺术" }, { w: "music", zh: "音乐" },
+      { w: "talent", zh: "天赋；才能" }, { w: "prize", zh: "奖品；奖项" },
+      { w: "present", zh: "颁发；礼物" }, { w: "winner", zh: "获胜者" },
+      { w: "composer", zh: "作曲家" }, { w: "melody", zh: "旋律" },
+      { w: "rushing", zh: "急促的" }, { w: "flowing", zh: "流动的" },
+      { w: "common", zh: "常见的；普通的" }, { w: "boundary", zh: "分界线；边界" },
+      { w: "breath", zh: "呼吸" }, { w: "instrument", zh: "乐器" },
+      { w: "award", zh: "奖；奖章" }, { w: "invite", zh: "邀请" },
+      /* 9A U6 TV programmes 电视节目 */
+      { w: "programme", zh: "节目" }, { w: "documentary", zh: "纪录片" },
+      { w: "chat", zh: "聊天；访谈" }, { w: "drama", zh: "戏剧；剧" },
+      { w: "live", zh: "现场直播的" }, { w: "studio", zh: "演播室" },
+      { w: "announcement", zh: "通告；公告" }, { w: "murder", zh: "谋杀" },
+      { w: "horror", zh: "恐怖" }, { w: "scene", zh: "场景；场面" },
+      { w: "superb", zh: "极佳的" }, { w: "audience", zh: "观众" },
+      { w: "society", zh: "社会" }, { w: "cover", zh: "报道；覆盖" },
+      /* 9A U7 Films 电影 */
+      { w: "actress", zh: "女演员" }, { w: "actor", zh: "男演员" },
+      { w: "dancer", zh: "舞蹈演员" }, { w: "famous", zh: "著名的" },
+      { w: "attract", zh: "吸引" }, { w: "charm", zh: "魅力" },
+      { w: "angel", zh: "天使" }, { w: "playground", zh: "操场" },
+      { w: "insist", zh: "坚持" }, { w: "afford", zh: "买得起；承担得起" },
+      { w: "effort", zh: "努力" }, { w: "beyond", zh: "超出；越过" },
+      { w: "lifetime", zh: "一生；终身" }, { w: "honour", zh: "荣誉；尊敬" },
+      { w: "humanitarian", zh: "人道主义者" }, { w: "final", zh: "最后的" },
+      /* 9A U8 Detective stories 侦探故事 */
+      { w: "detective", zh: "侦探" }, { w: "witness", zh: "证人" },
+      { w: "suspect", zh: "嫌疑人" }, { w: "guilty", zh: "有罪的" },
+      { w: "crime", zh: "犯罪；罪行" }, { w: "clue", zh: "线索" },
+      { w: "missing", zh: "失踪的" }, { w: "neighbourhood", zh: "街区；住宅区" },
+      { w: "kidnap", zh: "绑架" }, { w: "theft", zh: "偷窃" },
+      { w: "evidence", zh: "证据" }, { w: "arrest", zh: "逮捕" },
+      { w: "fingerprint", zh: "指纹" }, { w: "scream", zh: "尖叫" },
+      { w: "struggle", zh: "挣扎；搏斗" }, { w: "prison", zh: "监狱" },
+      /* 9B U1 Asia 亚洲 */
+      { w: "attract", zh: "吸引" }, { w: "attraction", zh: "吸引人的事物" },
+      { w: "wing", zh: "翅膀" }, { w: "rooftop", zh: "屋顶" },
+      { w: "drag", zh: "拖；拉" }, { w: "character", zh: "汉字；人物" },
+      { w: "gathering", zh: "聚集；聚会" }, { w: "custom", zh: "习俗；风俗" },
+      { w: "wonder", zh: "奇迹；惊奇" }, { w: "amazing", zh: "令人惊奇的" },
+      { w: "channel", zh: "海峡；频道" }, { w: "location", zh: "位置" },
+      { w: "dynasty", zh: "王朝；朝代" }, { w: "mountain", zh: "山" },
+      /* 9B U2 Great people 伟人 */
+      { w: "universe", zh: "宇宙" }, { w: "spacecraft", zh: "航天器；宇宙飞船" },
+      { w: "orbit", zh: "轨道；绕轨道运行" }, { w: "land", zh: "着陆；陆地" },
+      { w: "astronaut", zh: "宇航员" }, { w: "licence", zh: "执照；许可证" },
+      { w: "selection", zh: "选拔" }, { w: "survivor", zh: "幸存者" },
+      { w: "pride", zh: "自豪" }, { w: "achieve", zh: "实现；达到" },
+      { w: "sacrifice", zh: "牺牲" }, { w: "quotation", zh: "引语；语录" },
+      { w: "scientific", zh: "科学的" }, { w: "discover", zh: "发现" },
+      /* 9B U3 Robots 机器人 */
+      { w: "robot", zh: "机器人" }, { w: "iron", zh: "熨烫；熨斗" },
+      { w: "smooth", zh: "平整的；光滑的" }, { w: "virus", zh: "病毒" },
+      { w: "dustbin", zh: "垃圾桶" }, { w: "mess", zh: "混乱；脏乱" },
+      { w: "battery", zh: "电池" }, { w: "charge", zh: "充电；收费" },
+      { w: "customer", zh: "顾客" }, { w: "satisfy", zh: "使满意" },
+      { w: "properly", zh: "正确地；适当地" }, { w: "invent", zh: "发明" },
+      { w: "machine", zh: "机器" }, { w: "wheel", zh: "轮子" },
+      /* 9B U4 Life on Mars 火星生活 */
+      { w: "planet", zh: "行星" }, { w: "helmet", zh: "头盔" },
+      { w: "gravity", zh: "重力" }, { w: "boots", zh: "靴子" },
+      { w: "polluted", zh: "被污染的" }, { w: "oxygen", zh: "氧气" },
+      { w: "float", zh: "漂浮" }, { w: "crowded", zh: "拥挤的" },
+      { w: "interplanetary", zh: "行星间的" }, { w: "spacecraft", zh: "宇宙飞船" },
+      { w: "solar", zh: "太阳的" }, { w: "glove", zh: "手套" },
+      { w: "chemical", zh: "化学物质；化学的" }, { w: "development", zh: "发展" }
+    ]
+  });
+
   /* 去重 & 清洗：小写、只留 a-z 与空格 */
   B.forEach(function (book) {
     var seen = {};
