@@ -38,7 +38,7 @@
   - `css/style.css` 全部样式（浅色主题、响应式）
   - `js/correct.js` 纠错规则引擎（可独立复用，暴露 `DailyTalkCorrect.analyze(text)`）
   - `js/data.js` 场景库 + 自由对话应答引擎
-  - `js/words-data.js` 单词大炮词库（4 本词书 470+ 词，含九年级牛津译林版 9A/9B 课文词汇）
+  - `js/words-data.js` 单词大炮词库（5 本词书 650+ 词，含九年级牛津译林版 9A/9B、五年级人教版 PEP 上下册单元词汇）
   - `js/words.js` 单词大炮游戏引擎（下落 / 击落 / 堆叠 / 计分 / 错词本）
   - `js/picture-data.js` 绘本启蒙内容库（8 本原创绘本：页面文本 / 场景描述 / 单词 / 问答 / 家长贴士）
   - `js/picture.js` 绘本启蒙引擎（SVG 场景渲染器 / 逐词高亮朗读 / 磨耳朵连播 / 跟读评分 / 小问答）

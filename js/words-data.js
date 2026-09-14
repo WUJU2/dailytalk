@@ -251,6 +251,117 @@
     ]
   });
 
+  /* ---------- 5. 五年级人教版（PEP 五年级上册/下册） ---------- */
+  B.push({
+    id: "pep5",
+    name: "五年级人教版",
+    icon: "🎒",
+    desc: "PEP 人教版五年级上下册单元词：外貌性格、一周生活、点餐、才艺、房间方位、自然公园、季节、月份、物主代词……",
+    words: [
+      /* 五上 U1 What's he like? 外貌与性格 */
+      { w: "young", zh: "年轻的" }, { w: "funny", zh: "滑稽的；有趣的" },
+      { w: "kind", zh: "亲切的；和蔼的" }, { w: "strict", zh: "严格的" },
+      { w: "polite", zh: "有礼貌的" }, { w: "helpful", zh: "有帮助的" },
+      { w: "clever", zh: "聪明的" }, { w: "shy", zh: "害羞的" },
+      { w: "quiet", zh: "安静的" }, { w: "hardworking", zh: "勤奋的" },
+      { w: "fun", zh: "有趣的" }, { w: "teacher", zh: "老师" },
+      { w: "classmate", zh: "同班同学" }, { w: "principal", zh: "校长" },
+      /* 五上 U2 My week 一周生活 */
+      { w: "monday", zh: "星期一" }, { w: "tuesday", zh: "星期二" },
+      { w: "wednesday", zh: "星期三" }, { w: "thursday", zh: "星期四" },
+      { w: "friday", zh: "星期五" }, { w: "saturday", zh: "星期六" },
+      { w: "sunday", zh: "星期日" }, { w: "week", zh: "星期；周" },
+      { w: "weekend", zh: "周末" }, { w: "often", zh: "经常" },
+      { w: "sometimes", zh: "有时" }, { w: "homework", zh: "家庭作业" },
+      { w: "wash", zh: "洗" }, { w: "clothes", zh: "衣服" },
+      { w: "watch", zh: "看；观看" }, { w: "cook", zh: "烹饪；做饭" },
+      { w: "home", zh: "家" }, { w: "homework", zh: "作业" },
+      /* 五上 U3 What would you like? 点餐 */
+      { w: "sandwich", zh: "三明治" }, { w: "salad", zh: "沙拉" },
+      { w: "hamburger", zh: "汉堡包" }, { w: "soup", zh: "汤" },
+      { w: "tea", zh: "茶" }, { w: "fresh", zh: "新鲜的" },
+      { w: "healthy", zh: "健康的" }, { w: "delicious", zh: "美味的" },
+      { w: "sweet", zh: "甜的" }, { w: "sour", zh: "酸的" },
+      { w: "hot", zh: "热的；辣的" }, { w: "cold", zh: "冷的" },
+      { w: "sandwich", zh: "三明治" }, { w: "would", zh: "would like 想要" },
+      { w: "drink", zh: "喝；饮料" }, { w: "eat", zh: "吃" },
+      /* 五上 U4 What can you do? 才艺 */
+      { w: "sing", zh: "唱歌" }, { w: "dance", zh: "跳舞" },
+      { w: "swim", zh: "游泳" }, { w: "draw", zh: "画画" },
+      { w: "cartoon", zh: "卡通；动画片" }, { w: "basketball", zh: "篮球" },
+      { w: "pingpong", zh: "乒乓球" }, { w: "football", zh: "足球" },
+      { w: "kungfu", zh: "功夫" }, { w: "speak", zh: "说；讲" },
+      { w: "english", zh: "英语" }, { w: "chinese", zh: "汉语；中文" },
+      { w: "club", zh: "俱乐部；社团" }, { w: "show", zh: "表演；展示" },
+      /* 五上 U5 There is a big bed 房间与方位 */
+      { w: "clock", zh: "时钟" }, { w: "plant", zh: "植物" },
+      { w: "photo", zh: "照片" }, { w: "bike", zh: "自行车" },
+      { w: "bottle", zh: "瓶子" }, { w: "water", zh: "水" },
+      { w: "front", zh: "前面" }, { w: "behind", zh: "在…后面" },
+      { w: "between", zh: "在…之间" }, { w: "above", zh: "在…上方" },
+      { w: "beside", zh: "在…旁边" }, { w: "under", zh: "在…下面" },
+      { w: "bedroom", zh: "卧室" }, { w: "house", zh: "房子" },
+      { w: "there", zh: "那里；存在" }, { w: "room", zh: "房间" },
+      /* 五上 U6 In a nature park 自然公园 */
+      { w: "forest", zh: "森林" }, { w: "river", zh: "河流" },
+      { w: "lake", zh: "湖泊" }, { w: "mountain", zh: "山" },
+      { w: "hill", zh: "小山" }, { w: "tree", zh: "树" },
+      { w: "flower", zh: "花" }, { w: "grass", zh: "草" },
+      { w: "path", zh: "小路" }, { w: "sky", zh: "天空" },
+      { w: "cloud", zh: "云" }, { w: "boat", zh: "小船" },
+      { w: "bridge", zh: "桥" }, { w: "village", zh: "村庄" },
+      { w: "building", zh: "建筑物" }, { w: "nature", zh: "自然" },
+      /* 五下 U1 My day 日常作息 */
+      { w: "exercise", zh: "锻炼；运动" }, { w: "breakfast", zh: "早餐" },
+      { w: "usually", zh: "通常" }, { w: "when", zh: "什么时候" },
+      { w: "morning", zh: "早晨" }, { w: "afternoon", zh: "下午" },
+      { w: "evening", zh: "晚上" }, { w: "night", zh: "夜晚" },
+      { w: "start", zh: "开始" }, { w: "finish", zh: "结束；完成" },
+      { w: "why", zh: "为什么" }, { w: "because", zh: "因为" },
+      { w: "shop", zh: "商店；购物" }, { w: "o'clock", zh: "…点钟" },
+      /* 五下 U2 My favourite season 季节 */
+      { w: "spring", zh: "春天" }, { w: "summer", zh: "夏天" },
+      { w: "autumn", zh: "秋天" }, { w: "winter", zh: "冬天" },
+      { w: "season", zh: "季节" }, { w: "favourite", zh: "最喜欢的" },
+      { w: "snow", zh: "雪；下雪" }, { w: "wind", zh: "风" },
+      { w: "kite", zh: "风筝" }, { w: "warm", zh: "温暖的" },
+      { w: "cool", zh: "凉爽的" }, { w: "sunny", zh: "晴朗的" },
+      { w: "rainy", zh: "下雨的" }, { w: "pick", zh: "采摘；挑选" },
+      /* 五下 U3 My school calendar 月份与节日 */
+      { w: "january", zh: "一月" }, { w: "february", zh: "二月" },
+      { w: "march", zh: "三月" }, { w: "april", zh: "四月" },
+      { w: "may", zh: "五月" }, { w: "june", zh: "六月" },
+      { w: "july", zh: "七月" }, { w: "august", zh: "八月" },
+      { w: "september", zh: "九月" }, { w: "october", zh: "十月" },
+      { w: "november", zh: "十一月" }, { w: "december", zh: "十二月" },
+      { w: "month", zh: "月份" }, { w: "calendar", zh: "日历" },
+      { w: "holiday", zh: "假日；节日" }, { w: "christmas", zh: "圣诞节" },
+      { w: "contest", zh: "比赛；竞赛" }, { w: "trip", zh: "旅行" },
+      /* 五下 U4 When is the art show? 序数与日期 */
+      { w: "first", zh: "第一" }, { w: "second", zh: "第二" },
+      { w: "third", zh: "第三" }, { w: "fourth", zh: "第四" },
+      { w: "fifth", zh: "第五" }, { w: "sixth", zh: "第六" },
+      { w: "eighth", zh: "第八" }, { w: "ninth", zh: "第九" },
+      { w: "twelfth", zh: "第十二" }, { w: "twentieth", zh: "第二十" },
+      { w: "date", zh: "日期" }, { w: "birthday", zh: "生日" },
+      { w: "party", zh: "聚会" }, { w: "invitation", zh: "邀请函" },
+      /* 五下 U5 Whose dog is it? 物主代词与动物动作 */
+      { w: "whose", zh: "谁的" }, { w: "mine", zh: "我的" },
+      { w: "yours", zh: "你的" }, { w: "hers", zh: "她的" },
+      { w: "his", zh: "他的" }, { w: "theirs", zh: "他们的" },
+      { w: "ours", zh: "我们的" }, { w: "tail", zh: "尾巴" },
+      { w: "jump", zh: "跳" }, { w: "climb", zh: "爬" },
+      { w: "sleep", zh: "睡觉" }, { w: "chase", zh: "追赶" },
+      /* 五下 U6 Work quietly! 行为规范 */
+      { w: "quietly", zh: "安静地" }, { w: "loudly", zh: "大声地" },
+      { w: "keep", zh: "保持" }, { w: "talk", zh: "说话；交谈" },
+      { w: "walk", zh: "走；散步" }, { w: "listen", zh: "听" },
+      { w: "write", zh: "写" }, { w: "clean", zh: "打扫；干净的" },
+      { w: "rule", zh: "规则" }, { w: "wait", zh: "等待" },
+      { w: "turn", zh: "轮流；转弯" }, { w: "sorry", zh: "抱歉的" }
+    ]
+  });
+
   /* 去重 & 清洗：小写、只留 a-z 与空格 */
   B.forEach(function (book) {
     var seen = {};
